@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "inquirer": "^8.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
   "scripts": {
     "test": "jest"
   },
@@ -15,9 +24,5 @@
   "bugs": {
     "url": "https://github.com/Xavy-Romeo/team-profile-generator/issues"
   },
-  "homepage": "https://github.com/Xavy-Romeo/team-profile-generator#readme",
-  "dependencies": {
-    "inquirer": "^8.0.0",
-    "jest": "^26.6.3"
-  }
+  "homepage": "https://github.com/Xavy-Romeo/team-profile-generator#readme"
 }
