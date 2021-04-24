@@ -68,30 +68,30 @@ const promptUser = employeeArray => {
             message: 'What is your first name?',
             validate: firstNameInput => firstName(firstNameInput), 
         },
-        {
-            name: 'lastName',
-            type: 'input',
-            message: 'What is your last name?',
-            validate: lastNameInput => lastName(lastNameInput),
-        },
-        {
-            name: 'id',
-            type: 'input',
-            message: 'What is your id number?',
-            validate: idNameInput => id(idNameInput), 
-        },
-        {
-            name: 'email',
-            type: 'input',
-            message: 'What is your email address?',
-            validate: emailNameInput => email(emailNameInput),
-        },
-        {
-            name: 'office',
-            type: 'input',
-            message: 'What is your office number?',
-            validate: officeNameInput => office(officeNameInput),
-        },
+        // {
+        //     name: 'lastName',
+        //     type: 'input',
+        //     message: 'What is your last name?',
+        //     validate: lastNameInput => lastName(lastNameInput),
+        // },
+        // {
+        //     name: 'id',
+        //     type: 'input',
+        //     message: 'What is your id number?',
+        //     validate: idNameInput => id(idNameInput), 
+        // },
+        // {
+        //     name: 'email',
+        //     type: 'input',
+        //     message: 'What is your email address?',
+        //     validate: emailNameInput => email(emailNameInput),
+        // },
+        // {
+        //     name: 'office',
+        //     type: 'input',
+        //     message: 'What is your office number?',
+        //     validate: officeNameInput => office(officeNameInput),
+        // },
         {
             name: 'addEmployee',
             type: 'confirm',
@@ -100,27 +100,27 @@ const promptUser = employeeArray => {
         }
     ])
     .then(managerData => {
-        const returnEmployeeArray = () => {
+        const createEmployeeArray = () => {
             delete managerData.addEmployee;
             // if entering info for first time
             if (!employeeArray) {
                 employeeArray = [managerData];
-                return employeeArray;
             }
             // if reentering manager 1 info or making changes
             else {
                 employeeArray.splice(0, 1, managerData);
-                return employeeArray;
             } 
         };
 
         // if true, add employee
         if(managerData.addEmployee) {
-            returnEmployeeArray();
+            createEmployeeArray();
             promptAddEmployee(employeeArray);
+            return employeeArray;
         }
         else {
-            returnEmployeeArray();
+            createEmployeeArray();
+            return employeeArray;
         }        
     });
 };
@@ -222,4 +222,4 @@ const promptAddEmployee = employeeArray => {
     });
 };
 
-module.exports = promptUser();
+module.exports = promptUser;

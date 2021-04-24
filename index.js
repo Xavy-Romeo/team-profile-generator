@@ -1,4 +1,12 @@
-const prompt = require('./src/inquirer');
+const promptUser = require('./src/inquirer');
+const createPage = require('./src/page-template');
 
-prompt.promptUser
-.then(console.log('hey did i finish?'));
+// initiate program
+promptUser()
+.then(array => {
+    console.log(array);
+    return createPage(array);
+})
+.catch(err => {
+    console.log(err)
+});
