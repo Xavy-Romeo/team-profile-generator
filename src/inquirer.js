@@ -99,127 +99,129 @@ const promptUser = employeeArray => {
             default: false,
         }
     ])
-    .then(managerData => {
-        const createEmployeeArray = () => {
-            delete managerData.addEmployee;
+    .then(managerData => {  
             // if entering info for first time
             if (!employeeArray) {
                 employeeArray = [managerData];
+                return employeeArray;
             }
             // if reentering manager 1 info or making changes
             else {
                 employeeArray.splice(0, 1, managerData);
-            } 
-        };
-
-        // if true, add employee
-        if(managerData.addEmployee) {
-            createEmployeeArray();
-            promptAddEmployee(employeeArray);
-            return employeeArray;
-        }
-        else {
-            createEmployeeArray();
-            return employeeArray;
-        }        
-    });
+                return employeeArray;
+            }  
+    })
+    .then(promptAddEmployee);
 };
 
 // inquirer prompt other employee info
 const promptAddEmployee = employeeArray => {
-    return inquirer.prompt([
-        {
-            name: 'title',
-            type: 'list',
-            message: 'Choice a title for the employee',
-            choices: ['Manager', 'Engineer',  'Intern'],
-        },
-        {
-            name: 'email',
-            type: 'input',
-            message: "What is the employee's email address?",
-            validate: emailNameInput => email(emailNameInput),
-        },
-        {
-            name: 'office',
-            type: 'input',
-            message: "What is the manager's office number?",
-            when: ({title}) => {
-                if (title === 'Manager') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            },
-            validate: officeNameInput => office(officeNameInput),
-        },
-        {
-            name: 'github',
-            type: 'input',
-            message: "What is the engineer's github profile?",
-            when: ({title}) => {
-                if (title === 'Engineer') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            },
-            validate: github => {
-                if (github) {
-                    return true;
-                }
-                else {
-                    return "Please enter engineer's github!";
-                }
-            },
-        },
-        {
-            name: 'school',
-            type: 'input',
-            message: 'What school does the intern attend?',
-            when: ({title}) => {
-                if (title === 'Intern') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            },
-            validate: school => {
-                if (school) {
-                    return true;
-                }
-                else {
-                    return "Please enter intern's school!";
-                }
-            },
-        },
-        {
-            name: 'anotherEmployee',
-            type: 'confirm',
-            message: 'Would you like to add another employee?',
-            default: false,
-        },
-    ])
-    .then(employeeData => {
-        // function to delete anotherEmployee question from employee info
-        const deleteAnotherQuestion = () => {
-            delete employeeData.anotherEmployee;
-            employeeArray.push(employeeData);
-        };
 
-        // if true, add another employee
-        if (employeeData.anotherEmployee) {
-            deleteAnotherQuestion();
-            promptAddEmployee(employeeArray);
-        }
-        else {
-            deleteAnotherQuestion();
+    if (!employeeArray[0].addEmployee) {
+        // remove add employee question from employee info
+        delete employeeArray[0].addEmployee;
+        return employeeArray;
+    }
+    else if (employeeArray.length === 1 || employeeArray[employeeArray.length -1].anotherEmployee) {
+        delete employeeArray[employeeArray.length -1].anotherEmployee;
+        
+        console.log(`
+        ------------------------------
+          Adding another employee!!!
+        ------------------------------
+            `)
+        return inquirer.prompt([
+            {
+                name: 'title',
+                type: 'list',
+                message: 'Choice a title for the employee',
+                choices: ['Manager', 'Engineer',  'Intern'],
+            },
+            {
+                name: 'email',
+                type: 'input',
+                message: "What is the employee's email address?",
+                validate: emailNameInput => email(emailNameInput),
+            },
+            {
+                name: 'office',
+                type: 'input',
+                message: "What is the manager's office number?",
+                when: ({title}) => {
+                    if (title === 'Manager') {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+                validate: officeNameInput => office(officeNameInput),
+            },
+            {
+                name: 'github',
+                type: 'input',
+                message: "What is the engineer's github profile?",
+                when: ({title}) => {
+                    if (title === 'Engineer') {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+                validate: github => {
+                    if (github) {
+                        return true;
+                    }
+                    else {
+                        return "Please enter engineer's github!";
+                    }
+                },
+            },
+            {
+                name: 'school',
+                type: 'input',
+                message: 'What school does the intern attend?',
+                when: ({title}) => {
+                    if (title === 'Intern') {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+                validate: school => {
+                    if (school) {
+                        return true;
+                    }
+                    else {
+                        return "Please enter intern's school!";
+                    }
+                },
+            },
+            {
+                name: 'anotherEmployee',
+                type: 'confirm',
+                message: 'Would you like to add another employee?',
+                default: false,
+            },
+        ])
+        .then(employeeData => {
+            // add id to each employee
+            employeeData.id = employeeArray.length + 1;
+            
+            // push new employee into employee array
+            employeeArray.push(employeeData)
+            
             return employeeArray;
-        }
-    });
+        })
+        .then(promptAddEmployee);
+    }
+    else {  
+        delete employeeArray[employeeArray.length - 1].anotherEmployee;
+        delete employeeArray[0].addEmployee;
+        return employeeArray;          
+    }             
 };
 
 module.exports = promptUser;
