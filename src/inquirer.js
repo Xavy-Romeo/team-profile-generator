@@ -34,7 +34,7 @@ const lastName = input => {
 
 // inquirer - 'manager' id validation function
 const id = input => {
-    let idRegex = /1/;
+    let idRegex = /^[1]{1}$/;
     let idBlankError = 'Please enter your manager id 1 (note: not meant for production).';
     let idInputError = 'Please enter 1 for manager id (note: not meant for production).';
     
@@ -52,9 +52,9 @@ const email = input => {
 
 // inquirer - office validation function
 const office = input => {
-    let officeRegex = /^[A-Z0-9]{1,6}$/;
-    let officeBlankError = 'Please enter your office number.';
-    let officeInputError = 'Please enter a valid office number.';
+    let officeRegex = /^[0-9]{10}$/;
+    let officeBlankError = 'Please enter a ten digit phone number.';
+    let officeInputError = 'Please enter exactly ten digits.';
     
     return userInput(input, officeBlankError, officeRegex, officeInputError);
 };
@@ -63,35 +63,41 @@ const office = input => {
 const promptUser = employeeArray => {
     return inquirer.prompt([
         {
+            name: 'title',
+            type: 'list',
+            message: 'Choose manager to start.',
+            choices: ['Manager']
+        },
+        {
             name: 'firstName',
             type: 'input',
             message: 'What is your first name?',
             validate: firstNameInput => firstName(firstNameInput), 
         },
-        // {
-        //     name: 'lastName',
-        //     type: 'input',
-        //     message: 'What is your last name?',
-        //     validate: lastNameInput => lastName(lastNameInput),
-        // },
-        // {
-        //     name: 'id',
-        //     type: 'input',
-        //     message: 'What is your id number?',
-        //     validate: idNameInput => id(idNameInput), 
-        // },
-        // {
-        //     name: 'email',
-        //     type: 'input',
-        //     message: 'What is your email address?',
-        //     validate: emailNameInput => email(emailNameInput),
-        // },
-        // {
-        //     name: 'office',
-        //     type: 'input',
-        //     message: 'What is your office number?',
-        //     validate: officeNameInput => office(officeNameInput),
-        // },
+        {
+            name: 'lastName',
+            type: 'input',
+            message: 'What is your last name?',
+            validate: lastNameInput => lastName(lastNameInput),
+        },
+        {
+            name: 'id',
+            type: 'input',
+            message: 'What is your id number?',
+            validate: idNameInput => id(idNameInput), 
+        },
+        {
+            name: 'email',
+            type: 'input',
+            message: 'What is your email address?',
+            validate: emailNameInput => email(emailNameInput),
+        },
+        {
+            name: 'officeNumber',
+            type: 'input',
+            message: 'What is your office number?',
+            validate: officeNameInput => office(officeNameInput),
+        },
         {
             name: 'addEmployee',
             type: 'confirm',
@@ -120,11 +126,68 @@ const promptAddEmployee = employeeArray => {
     if (!employeeArray[0].addEmployee) {
         // remove add employee question from employee info
         delete employeeArray[0].addEmployee;
+        
+        let first =employeeArray[0].firstName;
+        let last =employeeArray[0].lastName;
+        let numb =employeeArray[0].officeNumber;
+        
+        // format first name
+        first = first.toLowerCase();
+        first = first.charAt(0).toUpperCase() + first.slice(1);
+        
+        employeeArray[0].firstName = first;
+    
+        // format last name
+        last = last.toLowerCase();
+        last = last.charAt(0).toUpperCase() + last.slice(1);
+        
+        employeeArray[0].lastName = last;     
+        
+        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
+            // format phone number
+            let area = numb.slice(0, 3);
+            let middle = numb.slice(3, 6);
+            let end = numb.slice(6, 10);
+
+            let phone = '(' + area + ')' + middle + '-' + end;
+            numb = phone; 
+            
+            employeeArray[0].officeNumber = numb;
+        }
+        
         return employeeArray;
     }
-    else if (employeeArray.length === 1 || employeeArray[employeeArray.length -1].anotherEmployee) {
-        delete employeeArray[employeeArray.length -1].anotherEmployee;
+    else if (employeeArray.length === 1 || employeeArray[employeeArray.length - 1].anotherEmployee && employeeArray.length !== 5) {
+        delete employeeArray[employeeArray.length - 1].anotherEmployee;
+
+        let first = employeeArray[employeeArray.length - 1].firstName;
+        let last = employeeArray[employeeArray.length - 1].lastName;
+        let numb = employeeArray[employeeArray.length - 1].officeNumber;
         
+        // format first name
+        first = first.toLowerCase();
+        first = first.charAt(0).toUpperCase() + first.slice(1);
+        
+        employeeArray[employeeArray.length - 1].firstName = first;
+    
+        // format last name
+        last = last.toLowerCase();
+        last = last.charAt(0).toUpperCase() + last.slice(1);
+        
+        employeeArray[employeeArray.length - 1].lastName = last;     
+        
+        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
+            // format phone number
+            let area = numb.slice(0, 3);
+            let middle = numb.slice(3, 6);
+            let end = numb.slice(6, 10);
+
+            let phone = '(' + area + ')' + middle + '-' + end;
+            numb = phone; 
+            
+            employeeArray[employeeArray.length - 1].officeNumber = numb;
+        }
+
         console.log(`
         ------------------------------
           Adding another employee!!!
@@ -138,13 +201,25 @@ const promptAddEmployee = employeeArray => {
                 choices: ['Manager', 'Engineer',  'Intern'],
             },
             {
+                name: 'firstName',
+                type: 'input',
+                message: "What is the employee's first name?",
+                validate: firstNameInput => firstName(firstNameInput), 
+            },
+            {
+                name: 'lastName',
+                type: 'input',
+                message: "What is the employee's last name?",
+                validate: lastNameInput => lastName(lastNameInput),
+            },
+            {
                 name: 'email',
                 type: 'input',
                 message: "What is the employee's email address?",
                 validate: emailNameInput => email(emailNameInput),
             },
             {
-                name: 'office',
+                name: 'officeNumber',
                 type: 'input',
                 message: "What is the manager's office number?",
                 when: ({title}) => {
@@ -160,7 +235,7 @@ const promptAddEmployee = employeeArray => {
             {
                 name: 'github',
                 type: 'input',
-                message: "What is the engineer's github profile?",
+                message: "What is the engineer's GitHub username?",
                 when: ({title}) => {
                     if (title === 'Engineer') {
                         return true;
@@ -208,7 +283,7 @@ const promptAddEmployee = employeeArray => {
         ])
         .then(employeeData => {
             // add id to each employee
-            employeeData.id = employeeArray.length + 1;
+            employeeData.id = (employeeArray.length + 1).toString();
             
             // push new employee into employee array
             employeeArray.push(employeeData)
@@ -217,10 +292,79 @@ const promptAddEmployee = employeeArray => {
         })
         .then(promptAddEmployee);
     }
+    else if (employeeArray.length === 5) {
+        console.log(`
+        -------------------------------------------------------------
+        You can add a maximum of 5 employees to your team. Thank you.
+        -------------------------------------------------------------`);
+
+        delete employeeArray[employeeArray.length - 1].anotherEmployee;
+        delete employeeArray[0].addEmployee;
+
+        let first = employeeArray[employeeArray.length - 1].firstName;
+        let last = employeeArray[employeeArray.length - 1].lastName;
+        let numb = employeeArray[employeeArray.length - 1].officeNumber;
+        
+        // format first name
+        first = first.toLowerCase();
+        first = first.charAt(0).toUpperCase() + first.slice(1);
+        
+        employeeArray[employeeArray.length - 1].firstName = first;
+    
+        // format last name
+        last = last.toLowerCase();
+        last = last.charAt(0).toUpperCase() + last.slice(1);
+        
+        employeeArray[employeeArray.length - 1].lastName = last;     
+        
+        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
+            // format phone number
+            let area = numb.slice(0, 3);
+            let middle = numb.slice(3, 6);
+            let end = numb.slice(6, 10);
+
+            let phone = '(' + area + ')' + middle + '-' + end;
+            numb = phone; 
+            
+            employeeArray[employeeArray.length - 1].officeNumber = numb;
+        }
+
+        return employeeArray;
+        
+    }
     else {  
         delete employeeArray[employeeArray.length - 1].anotherEmployee;
         delete employeeArray[0].addEmployee;
-        return employeeArray;          
+
+        let first = employeeArray[employeeArray.length - 1].firstName;
+        let last = employeeArray[employeeArray.length - 1].lastName;
+        let numb = employeeArray[employeeArray.length - 1].officeNumber;
+        
+        // format first name
+        first = first.toLowerCase();
+        first = first.charAt(0).toUpperCase() + first.slice(1);
+        
+        employeeArray[employeeArray.length - 1].firstName = first;
+    
+        // format last name
+        last = last.toLowerCase();
+        last = last.charAt(0).toUpperCase() + last.slice(1);
+        
+        employeeArray[employeeArray.length - 1].lastName = last;     
+        
+        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
+            // format phone number
+            let area = numb.slice(0, 3);
+            let middle = numb.slice(3, 6);
+            let end = numb.slice(6, 10);
+
+            let phone = '(' + area + ')' + middle + '-' + end;
+            numb = phone; 
+            
+            employeeArray[employeeArray.length - 1].officeNumber = numb;
+        }
+
+        return employeeArray;              
     }             
 };
 

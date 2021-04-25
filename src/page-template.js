@@ -1,36 +1,4 @@
-// const createPage = arr => {
-//     const array = `hi ${arr[0].firstName}`;
-//     console.log(array)
-// };
-
 const generatePage = arr => {
-    const length = arr.length;
-
-    generateEmployeeCards(arr);
-
-};
-
-const generateEmployeeCards = arr => {
-    for (let i=0; arr.length; i++){
-        return `
-        <div class="card">
-        
-            <div class="card-header">
-                ${arr[i].firstName}
-            </div>
-        
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID ${arr[i].id}</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-        
-        </div>
-        `
-    }
-}
-
-const generateHtml = arr => {
     
     return `
     <!DOCTYPE html>
@@ -50,14 +18,336 @@ const generateHtml = arr => {
         </header>
 
         <main>
-            // container to hold employee cards
-            <div id=employee-cards>
-                ${generateEmployeeCards}
-            </div>
+            <section id="employee-cards">          
+                ${generateCards(arr)}
+            </section>    
         </main>
+    
+        
     </body>
     </html>
     `
 };
 
-module.exports = generateHtml;
+const generateCards = arr => {
+    if (arr.length === 1) { 
+        return `
+                <!--Card 1-->
+                <div class="card" id="card1">
+                
+                    <div class="card-header">
+                        ${arr[0].firstName} ${arr[0].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[0].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[0].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                    </ul>
+                
+                </div>
+        `;
+    }
+    else if (arr.length === 2) {
+        return `
+                <!--Card 1-->
+                <div class="card" id="card1">
+                
+                    <div class="card-header">
+                        ${arr[0].firstName} ${arr[0].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[0].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[0].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 2-->
+                <div class="card" id="card2">
+                
+                    <div class="card-header">
+                        ${arr[1].firstName} ${arr[1].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[1].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[1].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                    </ul>
+                
+                </div>
+        `;
+    }
+    else if (arr.length === 3) {
+        return `
+                <!--Card 1-->
+                <div class="card" id="card1">
+                
+                    <div class="card-header">
+                        ${arr[0].firstName} ${arr[0].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[0].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[0].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 2-->
+                <div class="card" id="card2">
+                
+                    <div class="card-header">
+                        ${arr[1].firstName} ${arr[1].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[1].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[1].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 3-->
+                <div class="card" id="card3">
+                
+                    <div class="card-header">
+                        ${arr[2].firstName} ${arr[2].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[2].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[2].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 2)}</li>
+                    </ul>
+                
+                </div>
+        `;
+    }
+    else if (arr.length === 4) {
+        return `
+                <!--Card 1-->
+                <div class="card" id="card1">
+                
+                    <div class="card-header">
+                        ${arr[0].firstName} ${arr[0].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[0].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[0].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 2-->
+                <div class="card" id="card2">
+                
+                    <div class="card-header">
+                        ${arr[1].firstName} ${arr[1].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[1].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[1].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 3-->
+                <div class="card" id="card3">
+                
+                    <div class="card-header">
+                        ${arr[2].firstName} ${arr[2].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[2].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[2].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 2)}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 4-->
+                <div class="card" id="card4">
+                
+                    <div class="card-header">
+                        ${arr[3].firstName} ${arr[3].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[3].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[3].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 3)}</li>
+                    </ul>
+                
+                </div>
+        `;
+    }
+    else if (arr.length === 5) {
+        return `
+                <!--Card 1-->
+                <div class="card" id="card1">
+                
+                    <div class="card-header">
+                        ${arr[0].firstName} ${arr[0].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[0].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[0].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 2-->
+                <div class="card" id="card2">
+                
+                    <div class="card-header">
+                        ${arr[1].firstName} ${arr[1].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[1].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[1].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 3-->
+                <div class="card" id="card3">
+                
+                    <div class="card-header">
+                        ${arr[2].firstName} ${arr[2].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[2].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[2].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 2)}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 4-->
+                <div class="card" id="card4">
+                
+                    <div class="card-header">
+                        ${arr[3].firstName} ${arr[3].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[3].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[3].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 3)}</li>
+                    </ul>
+                
+                </div>
+
+                <!--Card 5-->
+                <div class="card" id="card5">
+                
+                    <div class="card-header">
+                        ${arr[4].firstName} ${arr[4].lastName}
+                        
+                        <div class="sub-title">
+                            ${arr[4].title}
+                        </div>
+                    </div>
+                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: ${arr[4].id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${arr[4].email}">${arr[4].email}</a></li>
+                        <li class="list-group-item">${generateInfo(arr, 4)}</li>
+                    </ul>
+                
+                </div>
+        `;
+    }
+}
+
+const generateInfo = (arr, index) => {
+        if (arr[index].title === 'Manager') {
+            return `
+            Office Number: ${arr[index].officeNumber}
+            `;
+        }
+        else if (arr[index].title === 'Engineer') {
+            return `
+            GitHub: <a href="https://github.com/${arr[index].github}" target="_blank">${arr[index].github}</a>
+            `;
+        }
+        else if (arr[index].title === 'Intern') {
+            return `
+            School: ${arr[index].school}
+            `;
+        } 
+};
+
+module.exports = generatePage;
