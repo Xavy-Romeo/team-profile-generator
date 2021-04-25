@@ -1,19 +1,28 @@
 const promptUser = require('./src/inquirer');
-
-const generatePage = require('./src/page-template');
-const writeFile = require('./utils/generate-site');
+const generateHtml = require('./src/page-template');
+const generateCss = require('./src/css-template');
+const {writeHtml, writeCss} = require('./utils/generate-site');
 
 // initiate program
 promptUser()
-// .then(arr => {
-//     return formatData(arr);
-// })
-.then(arr => {
-    return generatePage(arr);
+.then(employeeArr => {
+    return generateHtml(employeeArr);
 })
 .then(pageHTML => {
-    return writeFile(pageHTML);
+    return writeHtml(pageHTML);
 })
+.then(generateCss)
+.then(writeCss)
 .catch(err => {
-    console.log(err)
+    console.log(err);
 });
+
+
+// // generate CSS 
+// generateCss()
+// .then(() =>{
+//     return writeCss;
+// })
+// .catch(err => {
+//     console.log(err);
+// });

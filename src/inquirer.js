@@ -52,9 +52,9 @@ const email = input => {
 
 // inquirer - office validation function
 const office = input => {
-    let officeRegex = /^[0-9]{10}$/;
-    let officeBlankError = 'Please enter a ten digit phone number.';
-    let officeInputError = 'Please enter exactly ten digits.';
+    let officeRegex = /^[A-Z0-9]{1,3}$/;
+    let officeBlankError = "Please enter manager's office number.";
+    let officeInputError = 'Please enter a maximum of 3 Uppercase letters or numbers.';
     
     return userInput(input, officeBlankError, officeRegex, officeInputError);
 };
@@ -124,69 +124,15 @@ const promptUser = employeeArray => {
 const promptAddEmployee = employeeArray => {
 
     if (!employeeArray[0].addEmployee) {
+        formatName(employeeArray);
         // remove add employee question from employee info
-        delete employeeArray[0].addEmployee;
-        
-        let first =employeeArray[0].firstName;
-        let last =employeeArray[0].lastName;
-        let numb =employeeArray[0].officeNumber;
-        
-        // format first name
-        first = first.toLowerCase();
-        first = first.charAt(0).toUpperCase() + first.slice(1);
-        
-        employeeArray[0].firstName = first;
-    
-        // format last name
-        last = last.toLowerCase();
-        last = last.charAt(0).toUpperCase() + last.slice(1);
-        
-        employeeArray[0].lastName = last;     
-        
-        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
-            // format phone number
-            let area = numb.slice(0, 3);
-            let middle = numb.slice(3, 6);
-            let end = numb.slice(6, 10);
-
-            let phone = '(' + area + ')' + middle + '-' + end;
-            numb = phone; 
-            
-            employeeArray[0].officeNumber = numb;
-        }
+        delete employeeArray[0].addEmployee;   
         
         return employeeArray;
     }
     else if (employeeArray.length === 1 || employeeArray[employeeArray.length - 1].anotherEmployee && employeeArray.length !== 5) {
-        delete employeeArray[employeeArray.length - 1].anotherEmployee;
-
-        let first = employeeArray[employeeArray.length - 1].firstName;
-        let last = employeeArray[employeeArray.length - 1].lastName;
-        let numb = employeeArray[employeeArray.length - 1].officeNumber;
-        
-        // format first name
-        first = first.toLowerCase();
-        first = first.charAt(0).toUpperCase() + first.slice(1);
-        
-        employeeArray[employeeArray.length - 1].firstName = first;
-    
-        // format last name
-        last = last.toLowerCase();
-        last = last.charAt(0).toUpperCase() + last.slice(1);
-        
-        employeeArray[employeeArray.length - 1].lastName = last;     
-        
-        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
-            // format phone number
-            let area = numb.slice(0, 3);
-            let middle = numb.slice(3, 6);
-            let end = numb.slice(6, 10);
-
-            let phone = '(' + area + ')' + middle + '-' + end;
-            numb = phone; 
-            
-            employeeArray[employeeArray.length - 1].officeNumber = numb;
-        }
+        formatName(employeeArray);
+        delete employeeArray[employeeArray.length - 1].anotherEmployee;   
 
         console.log(`
         ------------------------------
@@ -287,85 +233,47 @@ const promptAddEmployee = employeeArray => {
             
             // push new employee into employee array
             employeeArray.push(employeeData)
-            
+
             return employeeArray;
         })
         .then(promptAddEmployee);
     }
     else if (employeeArray.length === 5) {
+        formatName(employeeArray);
+        delete employeeArray[employeeArray.length - 1].anotherEmployee;
+        delete employeeArray[0].addEmployee;
+        
         console.log(`
         -------------------------------------------------------------
         You can add a maximum of 5 employees to your team. Thank you.
         -------------------------------------------------------------`);
-
-        delete employeeArray[employeeArray.length - 1].anotherEmployee;
-        delete employeeArray[0].addEmployee;
-
-        let first = employeeArray[employeeArray.length - 1].firstName;
-        let last = employeeArray[employeeArray.length - 1].lastName;
-        let numb = employeeArray[employeeArray.length - 1].officeNumber;
-        
-        // format first name
-        first = first.toLowerCase();
-        first = first.charAt(0).toUpperCase() + first.slice(1);
-        
-        employeeArray[employeeArray.length - 1].firstName = first;
-    
-        // format last name
-        last = last.toLowerCase();
-        last = last.charAt(0).toUpperCase() + last.slice(1);
-        
-        employeeArray[employeeArray.length - 1].lastName = last;     
-        
-        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
-            // format phone number
-            let area = numb.slice(0, 3);
-            let middle = numb.slice(3, 6);
-            let end = numb.slice(6, 10);
-
-            let phone = '(' + area + ')' + middle + '-' + end;
-            numb = phone; 
-            
-            employeeArray[employeeArray.length - 1].officeNumber = numb;
-        }
-
+  
         return employeeArray;
-        
     }
     else {  
+        formatName(employeeArray);
         delete employeeArray[employeeArray.length - 1].anotherEmployee;
         delete employeeArray[0].addEmployee;
-
-        let first = employeeArray[employeeArray.length - 1].firstName;
-        let last = employeeArray[employeeArray.length - 1].lastName;
-        let numb = employeeArray[employeeArray.length - 1].officeNumber;
-        
-        // format first name
-        first = first.toLowerCase();
-        first = first.charAt(0).toUpperCase() + first.slice(1);
-        
-        employeeArray[employeeArray.length - 1].firstName = first;
-    
-        // format last name
-        last = last.toLowerCase();
-        last = last.charAt(0).toUpperCase() + last.slice(1);
-        
-        employeeArray[employeeArray.length - 1].lastName = last;     
-        
-        if (employeeArray[employeeArray.length - 1].title === 'Manager') {
-            // format phone number
-            let area = numb.slice(0, 3);
-            let middle = numb.slice(3, 6);
-            let end = numb.slice(6, 10);
-
-            let phone = '(' + area + ')' + middle + '-' + end;
-            numb = phone; 
-            
-            employeeArray[employeeArray.length - 1].officeNumber = numb;
-        }
-
+   
         return employeeArray;              
     }             
+};
+
+const formatName = arr => {
+    let first = arr[arr.length - 1].firstName;
+    let last = arr[arr.length - 1].lastName;
+    
+    // format first name
+    first = first.toLowerCase();
+    first = first.charAt(0).toUpperCase() + first.slice(1);
+    
+    arr[arr.length - 1].firstName = first;
+
+    // format last name
+    last = last.toLowerCase();
+    last = last.charAt(0).toUpperCase() + last.slice(1);
+    
+    arr[arr.length - 1].lastName = last;   
 };
 
 module.exports = promptUser;

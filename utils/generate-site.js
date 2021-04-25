@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const writeFile = fileContent => {
+const writeHtml = fileContent => {
     return new Promise((resolve, reject) => {
         fs.writeFile('./dist/index.html', fileContent, err => {
             if(err) {
@@ -15,4 +15,19 @@ const writeFile = fileContent => {
     });
 };
 
-module.exports = writeFile;
+const writeCss = fileContent => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('./dist/style.css', fileContent, err => {
+            if(err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'File: style.css created!'
+            });
+        });
+    });
+};
+
+module.exports = {writeHtml, writeCss};

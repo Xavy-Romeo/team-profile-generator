@@ -1,4 +1,4 @@
-const generatePage = arr => {
+const generateHtml = arr => {
     
     return `
     <!DOCTYPE html>
@@ -8,8 +8,7 @@ const generatePage = arr => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>My Team</title>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="./style.css">
     </head>
     
     <body>
@@ -18,7 +17,7 @@ const generatePage = arr => {
         </header>
 
         <main>
-            <section id="employee-cards">          
+            <section class="cards-container" id="employee-cards">          
                 ${generateCards(arr)}
             </section>    
         </main>
@@ -43,12 +42,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[0].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[0].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                        </ul>
+                    </div>
                 </div>
         `;
     }
@@ -65,12 +65,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[0].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[0].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 2-->
@@ -84,12 +85,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[1].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[1].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                        </ul>
+                    </div>
                 </div>
         `;
     }
@@ -106,12 +108,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[0].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[0].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 2-->
@@ -125,12 +128,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[1].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[1].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 3-->
@@ -144,12 +148,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[2].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 2)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[2].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 2)}</li>
+                        </ul>
+                    </div>
                 </div>
         `;
     }
@@ -166,12 +171,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[0].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[0].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 2-->
@@ -185,12 +191,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[1].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[1].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 3-->
@@ -204,12 +211,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[2].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 2)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[2].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 2)}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 4-->
@@ -223,12 +231,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[3].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 3)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[3].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 3)}</li>
+                        </ul>
+                    </div>
                 </div>
         `;
     }
@@ -245,12 +254,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[0].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                        <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[0].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
+                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 2-->
@@ -264,12 +274,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[1].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[1].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 3-->
@@ -283,12 +294,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[2].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 2)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[2].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 2)}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 4-->
@@ -302,12 +314,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[3].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 3)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[3].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 3)}</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!--Card 5-->
@@ -321,12 +334,13 @@ const generateCards = arr => {
                         </div>
                     </div>
                 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${arr[4].id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${arr[4].email}">${arr[4].email}</a></li>
-                        <li class="list-group-item">${generateInfo(arr, 4)}</li>
-                    </ul>
-                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${arr[4].id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${arr[4].email}">${arr[4].email}</a></li>
+                            <li class="list-group-item">${generateInfo(arr, 4)}</li>
+                        </ul>
+                    </div>
                 </div>
         `;
     }
@@ -334,20 +348,14 @@ const generateCards = arr => {
 
 const generateInfo = (arr, index) => {
         if (arr[index].title === 'Manager') {
-            return `
-            Office Number: ${arr[index].officeNumber}
-            `;
+            return `Office Number: ${arr[index].officeNumber}`;
         }
         else if (arr[index].title === 'Engineer') {
-            return `
-            GitHub: <a href="https://github.com/${arr[index].github}" target="_blank">${arr[index].github}</a>
-            `;
+            return `GitHub: <a href="https://github.com/${arr[index].github}" target="_blank">${arr[index].github}</a>`;
         }
         else if (arr[index].title === 'Intern') {
-            return `
-            School: ${arr[index].school}
-            `;
+            return `School: ${arr[index].school}`;
         } 
 };
 
-module.exports = generatePage;
+module.exports = generateHtml;
