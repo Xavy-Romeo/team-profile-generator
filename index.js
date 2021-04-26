@@ -16,13 +16,3 @@ promptUser()
 .catch(err => {
     console.log(err);
 });
-
-
-// // generate CSS 
-// generateCss()
-// .then(() =>{
-//     return writeCss;
-// })
-// .catch(err => {
-//     console.log(err);
-// });

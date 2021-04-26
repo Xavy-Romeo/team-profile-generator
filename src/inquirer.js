@@ -1,3 +1,19 @@
+// require classes
+// const Manager = require('../lib/Manager');
+// const Engineer = require('../lib/Engineer');
+// const Intern = require('../lib/Intern');
+
+
+
+
+
+
+
+
+
+
+
+
 // require inquirer
 const inquirer = require('inquirer');
 
@@ -105,15 +121,33 @@ const promptUser = employeeArray => {
             default: false,
         }
     ])
-    .then(managerData => {  
+    // .then(({firstName, lastName, id, email, officeNumber}) => {
+    //     return this.Employee = new Manager(firstName, lastName, id, email, officeNumber, addEmployee);
+    // })
+    // .then(({firstName, lastName, id, email, officeNumber, addEmployee}) => { 
+        
+    
+        .then(managerData => {
             // if entering info for first time
             if (!employeeArray) {
-                employeeArray = [managerData];
-                return employeeArray;
+
+                let employeeArray = [managerData];
+                formatName(employeeArray);
+                return employeeArray;  
+
+
+                // const manager = new Manager(firstName, lastName, id, email, officeNumber);
+                // employeeArray = [manager];
+                // formatName(employeeArray);
+                // console.log(employeeArray);
+
+                // const add = addEmployee;
+                // return employeeArray, add;
             }
             // if reentering manager 1 info or making changes
             else {
                 employeeArray.splice(0, 1, managerData);
+                formatName(employeeArray);
                 return employeeArray;
             }  
     })
@@ -123,7 +157,19 @@ const promptUser = employeeArray => {
 // inquirer prompt other employee info
 const promptAddEmployee = employeeArray => {
 
+
+// const promptAddEmployee = (employeeArray, add) => {
+
+
+
     if (!employeeArray[0].addEmployee) {
+
+
+
+    // if(!add) {
+    
+    
+    
         formatName(employeeArray);
         // remove add employee question from employee info
         delete employeeArray[0].addEmployee;   
@@ -230,11 +276,50 @@ const promptAddEmployee = employeeArray => {
         .then(employeeData => {
             // add id to each employee
             employeeData.id = (employeeArray.length + 1).toString();
-            
+
+
+
             // push new employee into employee array
-            employeeArray.push(employeeData)
+            employeeArray.push(employeeData);
 
             return employeeArray;
+
+
+            // if (employeeArray[employeeArray.length - 1].title === 'Manager') {
+            //     const data = {firstName, lastName, id, email, officeNumber};
+            //     const manager = new Manager(data.firstName, data.lastName, data.id, data.email, data.officeNumber);         
+                
+            //     employeeArray.push(manager);
+            //     console.log(employeeArray);
+            //     return employeeArray;
+            // }
+            // else if (employeeArray[employeeArray.length - 1].title === 'Engineer'){
+            //     const data = {firstName, lastName, id, email, github};
+            //     const engineer = new Engineer(data.firstName, data.lastName, data.id, data.email, data.github);         
+                
+            //     employeeArray.push(engineer);
+            //     console.log(employeeArray);
+            //     return employeeArray;
+            // }
+            // else if (employeeArray[employeeArray.length - 1].title === 'Intern') {
+            //     const data = {firstName, lastName, id, email, school};
+            //     const intern = new Intern(data.firstName, data.lastName, data.id, data.email, data.school);         
+                
+            //     employeeArray.push(intern);
+            //     console.log(employeeArray);
+            //     return employeeArray;
+            // }
+            // else {
+            //     return `Error: Role was not properly received.`;
+            // }
+
+
+
+
+
+
+
+
         })
         .then(promptAddEmployee);
     }
