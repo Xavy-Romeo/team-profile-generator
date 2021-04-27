@@ -1,6 +1,9 @@
-const generateHtml = arr => {
-    
-    return `
+const {writeHtml, writeCss} = require('../utils/generate-site');
+
+const cardArr = [];
+let htmlString = '';
+
+const template1 = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -17,345 +20,154 @@ const generateHtml = arr => {
         </header>
 
         <main>
-            <section class="cards-container" id="employee-cards">          
-                ${generateCards(arr)}
+            <section class="cards-container" id="employee-cards">
+`;
+
+const template2 = `
             </section>    
         </main>
-    
-        
+            
     </body>
     </html>
-    `
+`;
+ 
+const generateManagerCard = (role, empObj) => {
+    const card = `
+                <!--Card ${empObj.id}-->
+                <div class="card" id="card${empObj.id}">
+                
+                    <div class="card-header">
+                        ${empObj.firstName} ${empObj.lastName}
+                        
+                        <div class="sub-title">
+                            ${role}
+                        </div>
+                    </div>
+                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${empObj.id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${empObj.email}">${empObj.email}</a></li>
+                            <li class="list-group-item">Office Number: ${empObj.officeNumber}</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+    `;
+
+    // push each card into card array
+    cardArr.push(card);
 };
 
-const generateCards = arr => {
-    if (arr.length === 1) { 
-        return `
-                <!--Card 1-->
-                <div class="card" id="card1">
+const generateEngineerCard = (role, empObj) => {
+    const card = `
+                <!--Card ${empObj.id}-->
+                <div class="card" id="card${empObj.id}">
                 
                     <div class="card-header">
-                        ${arr[0].firstName} ${arr[0].lastName}
+                        ${empObj.firstName} ${empObj.lastName}
                         
                         <div class="sub-title">
-                            ${arr[0].title}
+                            ${role}
                         </div>
                     </div>
                 
                     <div class="list">
                         <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[0].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
+                            <li class="list-group-item">ID: ${empObj.id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${empObj.email}">${empObj.email}</a></li>
+                            <li class="list-group-item">GitHub: <a href="https://github.com/${empObj.github}" target="_blank">${empObj.github}</a></li>
                         </ul>
                     </div>
-                </div>
-        `;
-    }
-    else if (arr.length === 2) {
-        return `
-                <!--Card 1-->
-                <div class="card" id="card1">
-                
-                    <div class="card-header">
-                        ${arr[0].firstName} ${arr[0].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[0].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[0].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                        </ul>
-                    </div>
+
                 </div>
 
-                <!--Card 2-->
-                <div class="card" id="card2">
-                
-                    <div class="card-header">
-                        ${arr[1].firstName} ${arr[1].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[1].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[1].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                        </ul>
-                    </div>
-                </div>
-        `;
-    }
-    else if (arr.length === 3) {
-        return `
-                <!--Card 1-->
-                <div class="card" id="card1">
-                
-                    <div class="card-header">
-                        ${arr[0].firstName} ${arr[0].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[0].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[0].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                        </ul>
-                    </div>
-                </div>
+    `;
 
-                <!--Card 2-->
-                <div class="card" id="card2">
-                
-                    <div class="card-header">
-                        ${arr[1].firstName} ${arr[1].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[1].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[1].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 3-->
-                <div class="card" id="card3">
-                
-                    <div class="card-header">
-                        ${arr[2].firstName} ${arr[2].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[2].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[2].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 2)}</li>
-                        </ul>
-                    </div>
-                </div>
-        `;
-    }
-    else if (arr.length === 4) {
-        return `
-                <!--Card 1-->
-                <div class="card" id="card1">
-                
-                    <div class="card-header">
-                        ${arr[0].firstName} ${arr[0].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[0].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[0].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 2-->
-                <div class="card" id="card2">
-                
-                    <div class="card-header">
-                        ${arr[1].firstName} ${arr[1].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[1].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[1].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 3-->
-                <div class="card" id="card3">
-                
-                    <div class="card-header">
-                        ${arr[2].firstName} ${arr[2].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[2].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[2].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 2)}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 4-->
-                <div class="card" id="card4">
-                
-                    <div class="card-header">
-                        ${arr[3].firstName} ${arr[3].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[3].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[3].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 3)}</li>
-                        </ul>
-                    </div>
-                </div>
-        `;
-    }
-    else if (arr.length === 5) {
-        return `
-                <!--Card 1-->
-                <div class="card" id="card1">
-                
-                    <div class="card-header">
-                        ${arr[0].firstName} ${arr[0].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[0].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[0].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[0].email}">${arr[0].email}</a></li>
-                            <li class="list-group-item">Office Number: ${arr[0].officeNumber}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 2-->
-                <div class="card" id="card2">
-                
-                    <div class="card-header">
-                        ${arr[1].firstName} ${arr[1].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[1].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[1].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[1].email}">${arr[1].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 1)}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 3-->
-                <div class="card" id="card3">
-                
-                    <div class="card-header">
-                        ${arr[2].firstName} ${arr[2].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[2].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[2].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[2].email}">${arr[2].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 2)}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 4-->
-                <div class="card" id="card4">
-                
-                    <div class="card-header">
-                        ${arr[3].firstName} ${arr[3].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[3].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[3].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[3].email}">${arr[3].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 3)}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!--Card 5-->
-                <div class="card" id="card5">
-                
-                    <div class="card-header">
-                        ${arr[4].firstName} ${arr[4].lastName}
-                        
-                        <div class="sub-title">
-                            ${arr[4].title}
-                        </div>
-                    </div>
-                
-                    <div class="list">
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${arr[4].id}</li>
-                            <li class="list-group-item">Email: <a href="mailto:${arr[4].email}">${arr[4].email}</a></li>
-                            <li class="list-group-item">${generateInfo(arr, 4)}</li>
-                        </ul>
-                    </div>
-                </div>
-        `;
-    }
-}
-
-const generateInfo = (arr, index) => {
-        if (arr[index].title === 'Manager') {
-            return `Office Number: ${arr[index].officeNumber}`;
-        }
-        else if (arr[index].title === 'Engineer') {
-            return `GitHub: <a href="https://github.com/${arr[index].github}" target="_blank">${arr[index].github}</a>`;
-        }
-        else if (arr[index].title === 'Intern') {
-            return `School: ${arr[index].school}`;
-        } 
+    // push each card into card array
+    cardArr.push(card);
 };
 
-module.exports = generateHtml;
+const generateInternCard = (role, empObj) => {
+    const card = `
+                <!--Card ${empObj.id}-->
+                <div class="card" id="card${empObj.id}">
+                
+                    <div class="card-header">
+                        ${empObj.firstName} ${empObj.lastName}
+                        
+                        <div class="sub-title">
+                            ${role}
+                        </div>
+                    </div>
+                
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item">ID: ${empObj.id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${empObj.email}">${empObj.email}</a></li>
+                            <li class="list-group-item">School: ${empObj.school}</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+    `;
+
+    // push each card into card array
+    cardArr.push(card);
+};
+
+const createCards = arr => {
+    // for loop to look for employee role
+    for (let i = 0; i < arr.length; i++) {
+        
+        // check if manager
+        if (arr[i].officeNumber) {
+            role = arr[i].getRole();
+            generateManagerCard(role, arr[i]);
+        }
+        // check if engineer
+        else if (arr[i].github) {
+            role = arr[i].getRole();
+
+            generateEngineerCard(role, arr[i]);
+        }
+        // check if intern
+        else if (arr[i].school) {
+            role = arr[i].getRole();
+
+           generateInternCard(role, arr[i]);
+        }
+        else{
+            return `Error: Role for employee was returned undefined. Please start over.`;
+        }
+
+        if(i === arr.length-1) {
+            timeOuts();
+        }
+    }
+};
+
+const finalTemplate = arr => { 
+    htmlString = template1;
+    for (let i = 0; i < arr.length; i++){
+        htmlString = htmlString + arr[i];
+
+        if (i === arr.length - 1) {
+            htmlString = htmlString + template2;
+        }
+    }
+};
+
+const timeOuts = () => {
+    setTimeout(() => {
+        finalTemplate(cardArr);
+    }, 1000);
+
+    setTimeout(() => {
+        writeHtml(htmlString);
+    }, 2000);
+};
+
+module.exports = createCards;

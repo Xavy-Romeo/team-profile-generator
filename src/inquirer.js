@@ -1,20 +1,10 @@
+const createHtml = require('./page-template');
+
 // require classes
-// const Manager = require('../lib/Manager');
-// const Engineer = require('../lib/Engineer');
-// const Intern = require('../lib/Intern');
+const Manager = require('../lib/Manager');
+const Engineer = require('../lib/Engineer');
+const Intern = require('../lib/Intern');
 
-
-
-
-
-
-
-
-
-
-
-
-// require inquirer
 const inquirer = require('inquirer');
 
 // validation function to return error or true
@@ -48,14 +38,7 @@ const lastName = input => {
     return userInput(input, lastBlankError, lastRegex, lastInputError);
 };
 
-// inquirer - 'manager' id validation function
-const id = input => {
-    let idRegex = /^[1]{1}$/;
-    let idBlankError = 'Please enter your manager id 1 (note: not meant for production).';
-    let idInputError = 'Please enter 1 for manager id (note: not meant for production).';
-    
-    return userInput(input, idBlankError, idRegex, idInputError);
-};
+
 
 // inquirer - email validation function
 const email = input => {
@@ -76,10 +59,10 @@ const office = input => {
 };
 
 // inquirer prompt manager id:1 info
-const promptUser = employeeArray => {
+const promptUser = empArr => {
     return inquirer.prompt([
         {
-            name: 'title',
+            name: 'role',
             type: 'list',
             message: 'Choose manager to start.',
             choices: ['Manager']
@@ -95,12 +78,6 @@ const promptUser = employeeArray => {
             type: 'input',
             message: 'What is your last name?',
             validate: lastNameInput => lastName(lastNameInput),
-        },
-        {
-            name: 'id',
-            type: 'input',
-            message: 'What is your id number?',
-            validate: idNameInput => id(idNameInput), 
         },
         {
             name: 'email',
@@ -121,75 +98,47 @@ const promptUser = employeeArray => {
             default: false,
         }
     ])
-    // .then(({firstName, lastName, id, email, officeNumber}) => {
-    //     return this.Employee = new Manager(firstName, lastName, id, email, officeNumber, addEmployee);
-    // })
-    // .then(({firstName, lastName, id, email, officeNumber, addEmployee}) => { 
+    .then(({firstName, lastName, email, officeNumber, ...other}) => {
+        // give manager1 an id of 1
+        let id = '1';
         
-    
-        .then(managerData => {
-            // if entering info for first time
-            if (!employeeArray) {
-
-                let employeeArray = [managerData];
-                formatName(employeeArray);
-                return employeeArray;  
-
-
-                // const manager = new Manager(firstName, lastName, id, email, officeNumber);
-                // employeeArray = [manager];
-                // formatName(employeeArray);
-                // console.log(employeeArray);
-
-                // const add = addEmployee;
-                // return employeeArray, add;
-            }
-            // if reentering manager 1 info or making changes
-            else {
-                employeeArray.splice(0, 1, managerData);
-                formatName(employeeArray);
-                return employeeArray;
-            }  
+        // create a new Manager
+        const manager = new Manager(firstName, lastName, id, email, officeNumber); 
+        
+        // create employee array
+        const employeeArray = [manager];
+      
+        formatName(employeeArray);
+        return {employeeArray, other};
     })
-    .then(promptAddEmployee);
+    .then(data => {
+        if (data.other.addEmployee) {
+            addEmployee(data.employeeArray)
+        }
+        else {
+            console.log (`
+                -------------------------------------------------------------------------
+                Generating HTML... Upon success find generated HTML in ../dist/index.html
+                -------------------------------------------------------------------------
+                `);
+
+            createHtml(data.employeeArray);
+        }
+    });
 };
 
-// inquirer prompt other employee info
-const promptAddEmployee = employeeArray => {
-
-
-// const promptAddEmployee = (employeeArray, add) => {
-
-
-
-    if (!employeeArray[0].addEmployee) {
-
-
-
-    // if(!add) {
-    
-    
-    
-        formatName(employeeArray);
-        // remove add employee question from employee info
-        delete employeeArray[0].addEmployee;   
-        
-        return employeeArray;
-    }
-    else if (employeeArray.length === 1 || employeeArray[employeeArray.length - 1].anotherEmployee && employeeArray.length !== 5) {
-        formatName(employeeArray);
-        delete employeeArray[employeeArray.length - 1].anotherEmployee;   
-
+const addEmployee = empArr => {
+    if(empArr.length !== 5) {
         console.log(`
-        ------------------------------
-          Adding another employee!!!
-        ------------------------------
+                ------------------------------
+                  Adding another employee!!!
+                ------------------------------
             `)
         return inquirer.prompt([
             {
-                name: 'title',
+                name: 'role',
                 type: 'list',
-                message: 'Choice a title for the employee',
+                message: 'Choose a role for the employee.',
                 choices: ['Manager', 'Engineer',  'Intern'],
             },
             {
@@ -214,8 +163,8 @@ const promptAddEmployee = employeeArray => {
                 name: 'officeNumber',
                 type: 'input',
                 message: "What is the manager's office number?",
-                when: ({title}) => {
-                    if (title === 'Manager') {
+                when: ({role}) => {
+                    if (role === 'Manager') {
                         return true;
                     }
                     else {
@@ -228,8 +177,8 @@ const promptAddEmployee = employeeArray => {
                 name: 'github',
                 type: 'input',
                 message: "What is the engineer's GitHub username?",
-                when: ({title}) => {
-                    if (title === 'Engineer') {
+                when: ({role}) => {
+                    if (role === 'Engineer') {
                         return true;
                     }
                     else {
@@ -249,8 +198,8 @@ const promptAddEmployee = employeeArray => {
                 name: 'school',
                 type: 'input',
                 message: 'What school does the intern attend?',
-                when: ({title}) => {
-                    if (title === 'Intern') {
+                when: ({role}) => {
+                    if (role === 'Intern') {
                         return true;
                     }
                     else {
@@ -267,83 +216,84 @@ const promptAddEmployee = employeeArray => {
                 },
             },
             {
-                name: 'anotherEmployee',
+                name: 'addEmployee',
                 type: 'confirm',
                 message: 'Would you like to add another employee?',
                 default: false,
             },
         ])
-        .then(employeeData => {
-            // add id to each employee
-            employeeData.id = (employeeArray.length + 1).toString();
+        .then(({firstName, lastName, email, ...other}) => {
+            if(other.role === 'Manager') {
+                // create employee id
+                const id = (empArr.length + 1).toString();
+                // create new manager
+                const manager = new Manager(firstName, lastName, id, email, other.officeNumber);
 
+                // add new manager
+                empArr.push(manager);
+                              
+                formatName(empArr);
+            }
+            else if (other.role === 'Engineer') {
+                // create employee id
+                const id = (empArr.length + 1).toString();
+                // create new engineer
+                const engineer = new Engineer(firstName, lastName, id, email, other.github);
 
+                // add new engineer
+                empArr.push(engineer);
 
-            // push new employee into employee array
-            employeeArray.push(employeeData);
+                formatName(empArr);
+            }
+            else if (other.role === 'Intern') {
+                // create employee id
+                const id = (empArr.length + 1).toString();
+                // create new intern
+                const intern = new Intern(firstName, lastName, id, email, other.school);
 
-            return employeeArray;
+                // add new intern
+                empArr.push(intern);
 
+                formatName(empArr);
+            }
+            else {
+                return `Error: Employee role not received. Please start again!!!`;
+            }
 
-            // if (employeeArray[employeeArray.length - 1].title === 'Manager') {
-            //     const data = {firstName, lastName, id, email, officeNumber};
-            //     const manager = new Manager(data.firstName, data.lastName, data.id, data.email, data.officeNumber);         
+            if (other.addEmployee) {
+                addEmployee(empArr);
+            }
+            else{
+
+                console.log (`
+                -------------------------------------------------------------------------
+                Generating HTML... Upon success find generated HTML in ../dist/index.html
+                -------------------------------------------------------------------------
+                `);
                 
-            //     employeeArray.push(manager);
-            //     console.log(employeeArray);
-            //     return employeeArray;
-            // }
-            // else if (employeeArray[employeeArray.length - 1].title === 'Engineer'){
-            //     const data = {firstName, lastName, id, email, github};
-            //     const engineer = new Engineer(data.firstName, data.lastName, data.id, data.email, data.github);         
-                
-            //     employeeArray.push(engineer);
-            //     console.log(employeeArray);
-            //     return employeeArray;
-            // }
-            // else if (employeeArray[employeeArray.length - 1].title === 'Intern') {
-            //     const data = {firstName, lastName, id, email, school};
-            //     const intern = new Intern(data.firstName, data.lastName, data.id, data.email, data.school);         
-                
-            //     employeeArray.push(intern);
-            //     console.log(employeeArray);
-            //     return employeeArray;
-            // }
-            // else {
-            //     return `Error: Role was not properly received.`;
-            // }
-
-
-
-
-
-
-
-
-        })
-        .then(promptAddEmployee);
+                createHtml(empArr);
+            }
+        });
+    
     }
-    else if (employeeArray.length === 5) {
-        formatName(employeeArray);
-        delete employeeArray[employeeArray.length - 1].anotherEmployee;
-        delete employeeArray[0].addEmployee;
-        
+    else {
         console.log(`
-        -------------------------------------------------------------
-        You can add a maximum of 5 employees to your team. Thank you.
-        -------------------------------------------------------------`);
-  
-        return employeeArray;
+                -------------------------------------------------------------------------
+                      You can add a maximum of 5 employees to your team. Thank you.
+                -------------------------------------------------------------------------
+            `);
+
+        console.log (`
+                -------------------------------------------------------------------------
+                Generating HTML... Upon success find generated HTML in ../dist/index.html
+                -------------------------------------------------------------------------
+            `);   
+
+        createHtml(empArr);
     }
-    else {  
-        formatName(employeeArray);
-        delete employeeArray[employeeArray.length - 1].anotherEmployee;
-        delete employeeArray[0].addEmployee;
-   
-        return employeeArray;              
-    }             
 };
 
+// function to format name to desired format
 const formatName = arr => {
     let first = arr[arr.length - 1].firstName;
     let last = arr[arr.length - 1].lastName;
